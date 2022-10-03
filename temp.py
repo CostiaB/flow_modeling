@@ -23,29 +23,56 @@ p = channel_shape(field = field,
 
 
 
-p[bottom_right[0]:, (nx-bottom_left[1])-10] = const
-p[(ny-top_left[0]-50):, top_left[1]] = const
-p[0:bottom_right[0]+50, bottom_right[1]] = const # C
 
-p[0:(ny-top_left[0]), bottom_left[1]+50] = const #D
-
-p[(ny-top_left[0])-30:(ny-top_left[0])-29, bottom_left[1]:top_left[1]] = const #!!! E
-
-p[bottom_right[0]+29:bottom_right[0]+30, bottom_right[1]+1:(nx-bottom_left[1])] = const #!!! F
-
-
-
-'''
-
-     
-        # dp/dy = 0 at bottom channel border
         
-        p[bottom_right[0]-1:bottom_right[0], bottom_right[1]:(nx-bottom_left[1])] = \
-                p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]:(nx-bottom_left[1])]
         
-        # dp/dx at left bottom border
-        p[0:(ny-top_left[0]), bottom_left[1]-1] = p[0:(ny-top_left[0]), bottom_left[1]]'''
+#top E DONE!!!
+#p[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]+1:top_left[1]+2] = const*2
+#p[(ny-top_left[0])-2:(ny-top_left[0])-1, bottom_left[1]+1:top_left[1]+2] = -const*2 
 
-fig = plt.figure(figsize=(50, 20), dpi=500)
+p[(ny-top_left[0]):(ny-top_left[0])+1, bottom_left[1]+1:top_left[1]+2] = const*2
+p[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]+1:top_left[1]+2] = -const*2 
+
+
+
+#botton F DONE!!!
+#p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]-1:(nx-bottom_left[1])-1] = const*2 
+#p[bottom_right[0]+1:bottom_right[0]+2, bottom_right[1]-1:(nx-bottom_left[1])-1] = -const*2 
+
+p[bottom_right[0]-1:bottom_right[0], bottom_right[1]-1:(nx-bottom_left[1])-1] = const*2 
+p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]-1:(nx-bottom_left[1])-1] = -const*2 
+
+
+
+#D DONE!!!
+p[0:(ny-top_left[0]), bottom_left[1]] = const*2
+p[0:(ny-top_left[0]), bottom_left[1]+1] = -const*2
+
+
+
+#A DONE!!!
+p[bottom_right[0]:, (nx-bottom_left[1])-1] = const*2
+p[bottom_right[0]:, (nx-bottom_left[1])-2] = -const*2 
+
+
+
+#B DONE!!!
+#p[(ny-top_left[0]):, top_left[1]+1] = const*2
+p[(ny-top_left[0]):, top_left[1]+2] = -const*2
+
+
+
+# C DONE!!!
+p[0:bottom_right[0], bottom_right[1]-1] = const*2
+p[0:bottom_right[0], bottom_right[1]-2] = -const*2
+
+# P
+p[-1, top_left[1]+1:(nx-bottom_left[1])] = const*2
+p[0, bottom_left[1]:bottom_right[1]] = const*2
+
+fig = plt.figure(figsize=(50, 20), dpi=200)
 cmap = plt.get_cmap('RdBu')
 plt.imshow(p[::-1,:])
+plt.savefig('/home/lapa/hhjhj.png')
+
+

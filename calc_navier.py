@@ -82,9 +82,12 @@ def main(nt, p_it, freq):
         for file, name in zip(files, names):
             gc.collect()
             imgs = np.load(save_folder + '/' + file)
-            vmin, vmax = np.mean(imgs[imgs<0]), np.mean(imgs[imgs>0])
-            mean = np.mean(np.abs([vmin, vmax]))
-            vmin, vmax = -mean, mean
+            vmin = 0 if len(imgs[imgs<0]) == 0 else np.mean(imgs[imgs<0])
+            vmax = 0 if len(imgs[imgs>0]) == 0 else np.mean(imgs[imgs>0])
+            if 0 not in [vmin, vmax]:    
+                mean = np.mean(np.abs([vmin, vmax]))
+                vmin, vmax = -mean, mean
+                
             if vmax > 0.2:
                 vmin, vmax = -0.02, 0.02
             plot_gif(imgs, p_gif, name, vmin, vmax, ch_it, save_folder)

@@ -10,10 +10,11 @@ ch_it = np.load('ch_it.npy').tolist()
 for file, name in zip(files, names):
     gc.collect()
     imgs = np.load(file)
-    vmin, vmax = np.mean(imgs[imgs<0]), np.mean(imgs[imgs>0])
+    #vmin, vmax = np.mean(imgs[imgs<0]), np.mean(imgs[imgs>0])
+    vmin, vmax = np.mean(imgs[:3][imgs[:3]<0]), np.mean(imgs[:3][imgs[:3]>0])
     mean = np.mean(np.abs([vmin, vmax]))
-    #vmin, vmax = -mean, mean
-    vmin, vmax = -0.02, 0.02
-    plot_gif(imgs, p_gif, name, vmin, vmax, ch_it)
+    vmin, vmax = -mean, mean
+    #vmin, vmax = -0.02, 0.02
+    plot_gif(imgs, p_gif, 'home/lapa/' + name, vmin, vmax, ch_it)
     gc.collect()
     print(name, 'saved')

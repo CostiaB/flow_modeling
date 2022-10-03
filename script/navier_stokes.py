@@ -111,8 +111,8 @@ def navier_stokes(u, v, freq,
                   anode_value=anode_value, cathode_value=cathode_value,
                   border_value=border_value, nx=nx,
                   ny=ny)
-        v[-1, top_left[1]:] = 0 #F*np.cos(2*np.pi*(stepcount*dt)*freq)  
-        v[0, bottom_left[1]:bottom_right[1]] = 0 # -F*np.cos(2*np.pi*(stepcount*dt)*freq) 
+        #v[-1, top_left[1]:] = 0 #F*np.cos(2*np.pi*(stepcount*dt)*freq)  
+        #v[0, bottom_left[1]:bottom_right[1]] = 0 # -F*np.cos(2*np.pi*(stepcount*dt)*freq) 
         
         if p.max() > 5:
             print(f'\nit {t}, b_max : {b.max():.2E}, p_max : {p.max():.2E}, u_max : {u.max():.2E}, v_max : {v.max():.2E}')

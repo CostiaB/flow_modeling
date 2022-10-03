@@ -66,34 +66,48 @@ def pressure_poisson_periodic(p_z,
         
         # dp/dy = 0 at top channel border E
         
-        #p[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]:top_left[1]] = \
-        #         p[(ny-top_left[0])-2:(ny-top_left[0])-1, bottom_left[1]:top_left[1]]   
+        #p[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]+1:top_left[1]+2] =\
+            #p[(ny-top_left[0])-2:(ny-top_left[0])-1, bottom_left[1]+1:top_left[1]+2]   
+            
+        p[(ny-top_left[0]):(ny-top_left[0])+1, bottom_left[1]+1:top_left[1]+2] =\
+            p[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]+1:top_left[1]+2]    
 
         # dp/dy = 0 at bottom channel border F
         
-        p[bottom_right[0]-1:bottom_right[0], bottom_right[1]+1:(nx-bottom_left[1])] = \
-                p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]+1:(nx-bottom_left[1])]
+        #p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]-1:(nx-bottom_left[1])-1] =\
+        #    p[bottom_right[0]+1:bottom_right[0]+2, bottom_right[1]-1:(nx-bottom_left[1])-1]
+        
+        p[bottom_right[0]-1:bottom_right[0], bottom_right[1]-1:(nx-bottom_left[1])-1] =\
+            p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]-1:(nx-bottom_left[1])-1]
+        
         
         # dp/dx at left bottom border D
+        
+        #p[0:(ny-top_left[0]), bottom_left[1]] = p[0:(ny-top_left[0]), bottom_left[1]+1]
         p[0:(ny-top_left[0]), bottom_left[1]-1] = p[0:(ny-top_left[0]), bottom_left[1]]
         
-        
         # dp/dx at right top border A
+        
+        #p[bottom_right[0]:, (nx-bottom_left[1])-1] = p[bottom_right[0]:, (nx-bottom_left[1])-2]
         p[bottom_right[0]:, (nx-bottom_left[1])] = p[bottom_right[0]:, (nx-bottom_left[1])-1]
         
         # dp/dx at left top border B
+        
+        #p[(ny-top_left[0]):, top_left[1]+1] = p[(ny-top_left[0]):, top_left[1]+2]
         p[(ny-top_left[0]):, top_left[1]] = p[(ny-top_left[0]):, top_left[1]+1]
         
         # dp/dx at right bottom border C
+        #p[0:bottom_right[0], bottom_right[1]-1] = p[0:bottom_right[0], bottom_right[1]-2]
         p[0:bottom_right[0], bottom_right[1]] = p[0:bottom_right[0], bottom_right[1]-1]
-        
         
         #check whether we can implement this condicions via channel shape or 
         #directly thought shape of channel
         
           
-        p[-1, top_left[1]:] = P0*np.cos(2*np.pi*(stepcount*dt)*freq)  
-        p[0, bottom_left[1]:bottom_right[1]] = -P0*np.cos(2*np.pi*(stepcount*dt)*freq) 
+        freq_cos = np.cos(2 * np.pi * (stepcount * dt) * freq)  
+        
+        p[-1, top_left[1]+1:(nx-bottom_left[1])] = P0 * freq_cos 
+        p[0, bottom_left[1]:bottom_right[1]] = - P0 * freq_cos
         
         #p[-1, top_left[1]:] = 0
         #p[0, bottom_left[1]:bottom_right[1]] = +P0      
