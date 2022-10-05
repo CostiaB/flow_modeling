@@ -16,36 +16,37 @@ def navier_stokes(u, v, freq,
                   p, b,
                   rho, nu, 
                   dt, dx, dy,
-                  F, P0, nt, n_save=10, p_it=1500, save_folder=''):
+                  F, P0, nt, n_save=10, p_it=1500, save_folder='', stepcount=1,
+                  save_vectors=True):
     
     
-    
-    u_gr = []
-    v_gr = []
-    p_gr = []
-    ch_it = []
+    if save_vectors:
+        u_gr = []
+        v_gr = []
+        p_gr = []
+        ch_it = []
 
    
-    stepcount = 1
+    
     #check if p initialization is working
-    
-    b = build_up_b(rho, dt, dx, dy, u, v, w, h, d, s, 
-                   bottom_left, bottom_right, top_left, 
-                   anode_value, cathode_value, border_value,
-                   nx, ny)
-    
-    p = pressure_poisson_periodic(p,
-                              freq,
-                              w, h, d, s,
-                              bottom_left, top_left, bottom_right,
-                              anode_value, cathode_value,
-                              border_value,
-                              ny, nx,
-                               b,
-                              rho, nu, 
-                              dx, dy,
-                              P0, stepcount,
-                              1, dt)
+    '''    
+        b = build_up_b(rho, dt, dx, dy, u, v, w, h, d, s, 
+                       bottom_left, bottom_right, top_left, 
+                       anode_value, cathode_value, border_value,
+                       nx, ny)
+        
+        p = pressure_poisson_periodic(p,
+                                  freq,
+                                  w, h, d, s,
+                                  bottom_left, top_left, bottom_right,
+                                  anode_value, cathode_value,
+                                  border_value,
+                                  ny, nx,
+                                   b,
+                                  rho, nu, 
+                                  dx, dy,
+                                  P0, stepcount,
+                                  1, dt)'''
     
 
     for t in tqdm(range(nt)):
@@ -127,11 +128,11 @@ def navier_stokes(u, v, freq,
             print(f'\nit {t}, b_max : {b.max():.2E}, p_max : {p.max():.2E}, u_max : {u.max():.2E}, v_max : {v.max():.2E}')
         
         
-            
-            u_gr.append(u.copy())
-            v_gr.append(v.copy())
-            p_gr.append(p.copy())
-            ch_it.append(t)
+            if save_vectors:    
+                u_gr.append(u.copy())
+                v_gr.append(v.copy())
+                p_gr.append(p.copy())
+                ch_it.append(t)
             
         stepcount += 1
       
@@ -155,11 +156,12 @@ def navier_stokes(u, v, freq,
                   border_value=0,
                   ny=ny)'''
     print('Calculation complete')
-    files = [u_gr, v_gr, p_gr, ch_it]
-    names = ['u_gr', 'v_gr', 'p_gr', 'ch_it']
+    if save_vectors:
+        files = [u_gr, v_gr, p_gr, ch_it]
+        names = ['u_gr', 'v_gr', 'p_gr', 'ch_it']
+        
+        for file, name in zip(files, names):
+            save_file(file, name, save_folder)
     
-    for file, name in zip(files, names):
-        save_file(file, name, save_folder)
-
-    print('Calculated data was saved')
+        print('Calculated data was saved')
     return u, v, p

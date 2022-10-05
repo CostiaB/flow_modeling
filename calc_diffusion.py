@@ -1,4 +1,4 @@
-def main(N_it, p_it, freq):
+def main(N_it, p_it, freq, stop_it):
     import numpy as np
     import gc
     import os
@@ -58,7 +58,7 @@ def main(N_it, p_it, freq):
 
     try:
         
-        n_save = nt // 200 if N_it > 200 else 1
+        n_save = N_it // 200 if N_it > 200 else 1
         save_folder = './results/'
         save_folder += time.strftime('%Y_%m_%d_%H_%M', time.localtime())
         if not os.path.exists(save_folder):
@@ -79,6 +79,7 @@ def main(N_it, p_it, freq):
                               stepcount=a, save_vectors=False)
 
 
+            ''' 
             conc =  laplace2d_parralel_C0(c, 
                                   freq,
                                   w, h, d, s,
@@ -90,31 +91,39 @@ def main(N_it, p_it, freq):
                                   rho, nu, 
                                   dx, dy,
                                   P0=P0, stepcount=a,
-                                  nit=77, l1norm_target=1)
+                                  nit=77, l1norm_target=1,
+                                  stop_it=stop_it)
     
-            c = conc.copy()
-
+             c = conc.copy()
+            '''
     
          ##loop across number of time steps
-            cn = c.copy()
-            c[1:-1, 1:-1] = cn[1:-1,1:-1] - \
-                                D * dt / dx**2 * \
-                                (cn[1:-1, 2:] - 2 * cn[1:-1, 1:-1] + cn[1:-1, 0:-2]) - \
-                                D * dt / dy**2 * \
-                                (cn[2:,1: -1] - 2 * cn[1:-1, 1:-1] + cn[0:-2, 1:-1]) + \
-                                ( (u[1:-1,1:-1]* dt / dx * (cn[1:-1, 1:-1] - cn[1:-1, 0:-2])) )+ \
-                                    (v[1:-1,1:-1] * dt / dy * (cn[1:-1, 1:-1] - cn[0:-2, 1:-1]))
-        
+            for it in range(1000):
+                cn = c.copy()
                 
-
-            c = channel_shape(field=c,
-                        w=w, h=h, d=d, s=s,
-                        bottom_left=bottom_left, top_left=top_left,
-                        bottom_right=bottom_right,
-                        anode_value=ca, cathode_value=0,
-                        border_value=0,
-                        nx=nx,
-                        ny=ny)
+                #print('A: ', D * dt / dx**2 * (cn[1:-1, 2:] - 2 * cn[1:-1, 1:-1] + cn[1:-1, 0:-2]).mean())
+                #print('B: ', D * dt / dy**2 * (cn[2:, 1:-1] - 2 * cn[1:-1, 1:-1] + cn[0:-2, 1:-1]).mean())
+                #print('C: ', ( (u[1:-1,1:-1]* dt / dx * (cn[1:-1, 1:-1] - cn[1:-1, 0:-2])) ).mean())
+                #print('D: ', (v[1:-1,1:-1] * dt / dy * (cn[1:-1, 1:-1] - cn[0:-2, 1:-1])).mean())
+                
+                c[1:-1, 1:-1] = cn[1:-1,1:-1] - \
+                                    D * dt / dx**2 * \
+                                    (cn[1:-1, 2:] - 2 * cn[1:-1, 1:-1] + cn[1:-1, 0:-2]) - \
+                                    D * dt / dy**2 * \
+                                    (cn[2:, 1:-1] - 2 * cn[1:-1, 1:-1] + cn[0:-2, 1:-1]) + \
+                                    ( (u[1:-1,1:-1]* dt / dx * (cn[1:-1, 1:-1] - cn[1:-1, 0:-2])) )+ \
+                                        (v[1:-1,1:-1] * dt / dy * (cn[1:-1, 1:-1] - cn[0:-2, 1:-1]))
+            
+                    
+    
+                c = channel_shape(field=c,
+                            w=w, h=h, d=d, s=s,
+                            bottom_left=bottom_left, top_left=top_left,
+                            bottom_right=bottom_right,
+                            anode_value=ca, cathode_value=0,
+                            border_value=0,
+                            nx=nx,
+                            ny=ny)
             
             
                 
@@ -130,9 +139,10 @@ def main(N_it, p_it, freq):
                 t = 1
                 g = 0
             #bottom cathode        
-            bc = c[ny-top_left[0]-g*h-1:ny-top_left[0]-t*h+1, top_left[1]-s-w-d-w-1:top_left[1]-s-w-d+1]
+            bc = c[ny-top_left[0]-g*h-1:ny-top_left[0]-t*h, top_left[1]-s-w-d-w-1:top_left[1]-s-w-d+1]
             #top cathode
-            tc = c[bottom_right[0]+t*h-1:bottom_right[0]+g*h+1, bottom_right[1]+s+w+d-1:bottom_right[1]+s+w+d+w+1] 
+            tc = c[bottom_right[0]+t*h:bottom_right[0]+g*h+1, bottom_right[1]+s+w+d-1:bottom_right[1]+s+w+d+w+1]
+            
     
     
             integr = tc.sum() - bc.sum()
@@ -190,11 +200,13 @@ if __name__ == '__main__':
     N_it = 200
     p_it = 1500
     freq = .1
+    stop_it = 3000
     
     parser = argparse.ArgumentParser(description='Create params for calculation')
     parser.add_argument('--N_it', default=N_it, type=int)
     parser.add_argument('--p_it', default=p_it, type=int)
     parser.add_argument('--freq', default=freq, type=float)
+    parser.add_argument('--stop_it', default=stop_it, type=float)
     
     args = parser.parse_args()
-    main(N_it=args.N_it, p_it=args.p_it, freq=args.freq)
+    main(N_it=args.N_it, p_it=args.p_it, freq=args.freq, stop_it=stop_it)

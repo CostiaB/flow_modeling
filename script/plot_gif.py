@@ -25,7 +25,7 @@ def plot_gif(vector, p, file_name, vmin=-0.01, vmax=0.01, ch_it=None,
     for idx, frame in enumerate(vector):
         frames.append(helper_plot_1(frame, idx, p))
     
-    duration = len(frames)*0.1
+    duration = len(frames)*0.3
     file_name = save_folder + '/' + file_name + '.gif'
     
     gif.save(frames, file_name, 

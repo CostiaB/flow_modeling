@@ -103,8 +103,11 @@ def pressure_poisson_periodic(p_z,
         #check whether we can implement this condicions via channel shape or 
         #directly thought shape of channel
         
-          
-        freq_cos = np.cos(2 * np.pi * (stepcount * dt) * freq)  
+        
+        #100 points for ech frequency
+        time_mult = 1/(100 * freq)
+        
+        freq_cos = np.cos(2 * np.pi * (stepcount * time_mult) * freq)  
         
         p[-1, top_left[1]+1:(nx-bottom_left[1])] = P0 * freq_cos 
         p[0, bottom_left[1]:bottom_right[1]] = - P0 * freq_cos

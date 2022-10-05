@@ -7,14 +7,15 @@ def laplace2d_parralel_C0(c,
                           freq,
                           w, h, d, s,
                           bottom_left, top_left, bottom_right,
-                          andode_value, cathode_value,
+                          anode_value, cathode_value,
                           border_value,
                           ny, nx,
                           b,
                           rho, nu, 
                           dx, dy,
                           P0, stepcount,
-                          nit, l1norm_target):
+                          nit, l1norm_target,
+                          stop_it=2500):
     
     l1norm = 1
     cn = np.empty_like(c)
@@ -36,8 +37,9 @@ def laplace2d_parralel_C0(c,
                   w=w, h=h, d=d, s=s,
                   bottom_left=bottom_left, top_left=top_left,
                   bottom_right=bottom_right,
-                  andode_value=andode_value, cathode_value=cathode_value,
+                  anode_value=anode_value, cathode_value=cathode_value,
                   border_value=border_value,
+                  nx=nx,
                   ny=ny)
         
         
@@ -57,10 +59,9 @@ def laplace2d_parralel_C0(c,
         if i%10 == 0 and i > 1:
             l1norm = np.abs((np.sum(np.abs(c[:]) - np.abs(cn[:])) /
             np.sum(np.abs(cn[:]))))
-            if  l1norm < l1norm_target or i >25000:
+            if  l1norm < l1norm_target or i > stop_it:
                 #c[np.where(mask_cathodes==1)] = 0
                 #c[np.where(mask_anodes==1)] = 0
-                print(l1norm)
                 break
          
 

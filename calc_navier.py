@@ -111,7 +111,7 @@ if __name__ == '__main__':
     import argparse
     
     nt = 20
-    p_it = 1000
+    p_it = 1500
     freq = .1
     
     parser = argparse.ArgumentParser(description='Create params for calculation')
