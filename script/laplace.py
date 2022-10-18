@@ -42,7 +42,44 @@ def laplace2d_parralel_C0(c,
                   nx=nx,
                   ny=ny)
         
+        # dp/dy = 0 at top channel border E
         
+        #p[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]+1:top_left[1]+2] =\
+            #p[(ny-top_left[0])-2:(ny-top_left[0])-1, bottom_left[1]+1:top_left[1]+2]   
+            
+        c[(ny-top_left[0]):(ny-top_left[0])+1, bottom_left[1]+1:top_left[1]+2] =\
+            c[(ny-top_left[0])-1:(ny-top_left[0]), bottom_left[1]+1:top_left[1]+2]    
+
+        # dp/dy = 0 at bottom channel border F
+        
+        #p[bottom_right[0]:bottom_right[0]+1, bottom_right[1]-1:(nx-bottom_left[1])-1] =\
+        #    p[bottom_right[0]+1:bottom_right[0]+2, bottom_right[1]-1:(nx-bottom_left[1])-1]
+        
+        c[bottom_right[0]-1:bottom_right[0], bottom_right[1]-1:(nx-bottom_left[1])-1] =\
+            c[bottom_right[0]:bottom_right[0]+1, bottom_right[1]-1:(nx-bottom_left[1])-1]
+        
+        
+        # dp/dx at left bottom border D
+        
+        #p[0:(ny-top_left[0]), bottom_left[1]] = p[0:(ny-top_left[0]), bottom_left[1]+1]
+        c[0:(ny-top_left[0]), bottom_left[1]-1] = c[0:(ny-top_left[0]), bottom_left[1]]
+        
+        # dp/dx at right top border A
+        
+        #p[bottom_right[0]:, (nx-bottom_left[1])-1] = p[bottom_right[0]:, (nx-bottom_left[1])-2]
+        c[bottom_right[0]:, (nx-bottom_left[1])] = c[bottom_right[0]:, (nx-bottom_left[1])-1]
+        
+        # dp/dx at left top border B
+        
+        #p[(ny-top_left[0]):, top_left[1]+1] = p[(ny-top_left[0]):, top_left[1]+2]
+        c[(ny-top_left[0]):, top_left[1]] = c[(ny-top_left[0]):, top_left[1]+1]
+        
+        # dp/dx at right bottom border C
+        #p[0:bottom_right[0], bottom_right[1]-1] = p[0:bottom_right[0], bottom_right[1]-2]
+        c[0:bottom_right[0], bottom_right[1]] = c[0:bottom_right[0], bottom_right[1]-1]
+        
+        #check whether we can implement this condicions via channel shape or 
+        #directly thought shape of channel
         
         # border (gradC,n) == 0 
         #x,y = border(w, 0, d,l)

@@ -8,6 +8,8 @@ def main(nt, p_it, freq):
     from script.navier_stokes import navier_stokes
     from script.channel_shape import channel_shape
     from script.plot_gif import plot_gif
+    from script.save_params import write_params 
+    
     import params_channel_shape
     import params_to_calc
     
@@ -50,6 +52,7 @@ def main(nt, p_it, freq):
         
         n_save = nt // 200 if nt > 200 else 1
         save_folder = './results/'
+        save_folder += 'navier_'
         save_folder += time.strftime('%Y_%m_%d_%H_%M', time.localtime())
         if not os.path.exists(save_folder):
             os.mkdir(save_folder)
@@ -96,6 +99,7 @@ def main(nt, p_it, freq):
         
         shutil.copy('params_to_calc.py', save_folder)
         shutil.copy('params_channel_shape.py', save_folder)
+        write_params(save_folder, p_it=p_it, nt=nt, freq=freq)
         print('Params was saved')
         print(f'Directory name: {save_folder}')
         

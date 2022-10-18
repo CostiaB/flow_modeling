@@ -70,6 +70,24 @@ p[0:bottom_right[0], bottom_right[1]-2] = -const*2
 p[-1, top_left[1]+1:(nx-bottom_left[1])] = const*2
 p[0, bottom_left[1]:bottom_right[1]] = const*2
 
+t = 0
+g = 1
+if h==0:
+    h = 1
+elif h<0:
+    t = 1
+    g = 0
+#bottom cathode        
+bc = p[ny-top_left[0]-g*h-1:ny-top_left[0]-t*h+1, top_left[1]-s-w-d-w-1:top_left[1]-s-w-d+1]
+#top cathode
+tc = p[bottom_right[0]+t*h-1:bottom_right[0]+g*h+1, bottom_right[1]+s+w+d-1:bottom_right[1]+s+w+d+w+1] 
+    
+#p[bottom_right[0]+t*h-1:bottom_right[0]+g*h+1, bottom_right[1]+s+w+d-1:bottom_right[1]+s+w+d+w+1]  = -const*2
+
+
+p[ny-top_left[0]-g*h-1:ny-top_left[0]-t*h, top_left[1]-s-w-d-w-1:top_left[1]-s-w-d+1] = -const*2
+
+
 fig = plt.figure(figsize=(50, 20), dpi=200)
 cmap = plt.get_cmap('RdBu')
 plt.imshow(p[::-1,:])

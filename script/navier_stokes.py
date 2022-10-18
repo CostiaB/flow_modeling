@@ -17,7 +17,8 @@ def navier_stokes(u, v, freq,
                   rho, nu, 
                   dt, dx, dy,
                   F, P0, nt, n_save=10, p_it=1500, save_folder='', stepcount=1,
-                  save_vectors=True):
+                  save_vectors=True,
+                  silent=False):
     
     
     if save_vectors:
@@ -116,7 +117,8 @@ def navier_stokes(u, v, freq,
         #v[0, bottom_left[1]:bottom_right[1]] = 0 # -F*np.cos(2*np.pi*(stepcount*dt)*freq) 
         
         if p.max() > 5:
-            print(f'\nit {t}, b_max : {b.max():.2E}, p_max : {p.max():.2E}, u_max : {u.max():.2E}, v_max : {v.max():.2E}')
+            if not silent:
+                print(f'\nit {t}, b_max : {b.max():.2E}, p_max : {p.max():.2E}, u_max : {u.max():.2E}, v_max : {v.max():.2E}')
             print('Value is too big! Calculation was stopped! ')
             break
         
@@ -125,9 +127,8 @@ def navier_stokes(u, v, freq,
         #v[0, bottom_left[1]:bottom_right[1]] = F*np.cos(2*np.pi*(stepcount*dt)*freq)
         #v[-1, top_left[1]:-1] = -F*np.cos(2*np.pi*(stepcount*dt)*freq) 
         if t % n_save == 0:
-            print(f'\nit {t}, b_max : {b.max():.2E}, p_max : {p.max():.2E}, u_max : {u.max():.2E}, v_max : {v.max():.2E}')
-        
-        
+            if not silent:
+                print(f'\nit {t}, b_max : {b.max():.2E}, p_max : {p.max():.2E}, u_max : {u.max():.2E}, v_max : {v.max():.2E}')
             if save_vectors:    
                 u_gr.append(u.copy())
                 v_gr.append(v.copy())
@@ -155,7 +156,9 @@ def navier_stokes(u, v, freq,
                   andode_value=0, cathode_value=0,
                   border_value=0,
                   ny=ny)'''
-    print('Calculation complete')
+    if not silent:
+        print('Calculation complete')
+        
     if save_vectors:
         files = [u_gr, v_gr, p_gr, ch_it]
         names = ['u_gr', 'v_gr', 'p_gr', 'ch_it']
