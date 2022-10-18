@@ -1,5 +1,5 @@
 # flow_modeling
-[Pressure modeling example](info/p_init_0.gif?raw=true)
+![Pressure modeling example](info/p_init_0.gif?raw=true)
 Sensor  nonlinear channel  modeling
 
 Convection-diffusion equation:
