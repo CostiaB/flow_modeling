@@ -1,0 +1,7 @@
+To calc navier:
+python3 calc_navier.py --nt 100 --p_it 1500 --freq 1
+
+
+To save video from gif:
+python3 save_video_from_gif.py --gif_path '/home/lapa/Downloads/v.gif'
+
