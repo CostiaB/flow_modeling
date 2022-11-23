@@ -12,80 +12,31 @@ p = channel_shape(field=field,
                   border_value=border_value, nx=nx,
                   ny=ny)
 
-# dp/dy = 0 at bottom channel border E
-   
-p[(ny-top_left[0]-1), bottom_left[1]+2:top_left[1]] = -100
-p[(ny-top_left[0]-2), bottom_left[1]+2:top_left[1]] = 100
-
-# dp/dy = 0 at bottom channel border F
-
-p[bottom_right[0], bottom_right[1]:(nx-bottom_left[1]-2)] = -100
-p[bottom_right[0]+1, bottom_right[1]:(nx-bottom_left[1]-2)] = 100
-
-# dp/dx at left bottom border D
+center_x, center_y = p.shape[0]//2, p.shape[1]//2 
+height = 10
+length = 30
+        
 
 
-p[0:(ny-top_left[0]-2), bottom_left[1]] = -100
-p[0:(ny-top_left[0]-2), bottom_left[1]+1] = 100
+'''
+p[(center_x-height//2):(center_x+height//2), (center_y-length//2)-1] = 1000
+p[(center_x-height//2):(center_x+height//2), (center_y-length//2)] = 10
 
-# dp/dx at right top border A
+p[(center_x-height//2):(center_x+height//2), (center_y+length//2)] = 1000
+p[(center_x-height//2):(center_x+height//2), (center_y+length//2)-1] = 10
 
+p[(center_x-height//2),(center_y-length//2):(center_y+length//2)] = 1000
+p[(center_x-height//2)+1,(center_y-length//2):(center_y+length//2)] = 10
 
-p[(bottom_right[0]+2):, (nx-bottom_left[1]-1)] = -100
-p[(bottom_right[0]+2):, (nx-bottom_left[1]-2)] = 100
-
-# dp/dx at left top border B
-
-
-p[(ny-top_left[0]):, top_left[1]] = -100
-p[(ny-top_left[0]):, top_left[1]+1] = 100
-
-# dp/dx at right bottom border C
-
-p[0:bottom_right[0], bottom_right[1]-1] = -100
-p[0:bottom_right[0], bottom_right[1]-2] = 100
-
-
-# dp/dx fill emty space in borders
-# D/E
-# center
-p[(ny-top_left[0]-1), bottom_left[1]] = -100
-p[(ny-top_left[0]-2), bottom_left[1]+1] = 100
-# side
-p[(ny-top_left[0]-1), bottom_left[1]+1] = -100
-p[(ny-top_left[0]-2), bottom_left[1]] = -100
-
-#B/E
-# center
-p[(ny-top_left[0]-1), top_left[1]] = -100
-p[(ny-top_left[0]-2), top_left[1]+1] = 100
-# side
-p[(ny-top_left[0]-1), top_left[1]+1] = 100
-p[(ny-top_left[0]-2), top_left[1]] = 100
-
-# C/F
-# center
-p[bottom_right[0], bottom_right[1]-1] = -100
-p[bottom_right[0]+1, bottom_right[1]-2] = 100
-# side
-p[bottom_right[0], bottom_right[1]-2] = 100
-p[bottom_right[0]+1, bottom_right[1]-1] = 100
-
-#A/F
-# center
-p[bottom_right[0], (nx-bottom_left[1]-1)] = -100
-p[bottom_right[0]+1, (nx-bottom_left[1]-2)] = 100
-# side
-p[bottom_right[0], (nx-bottom_left[1]-2)] = -100
-p[bottom_right[0]+1, (nx-bottom_left[1]-1)] = -100
-
+p[(center_x+height//2),(center_y-length//2):(center_y+length//2)] = 1000
+p[(center_x+height//2)-1,(center_y-length//2):(center_y+length//2)] = 10'''
 
 
 fig = plt.figure(figsize = (30,12), dpi=300)
 cmap = plt.get_cmap('RdBu')
-#plt.imshow(p[::-1,:])
-plt.imshow(p[::-1,:], cmap=cmap, vmin=-10, vmax=10)
-plt.savefig('/home/lapa/Figure 2022-10-31 112958.png')
+plt.imshow(p[::-1,:])
+#plt.imshow(p[::-1,:], cmap=cmap, vmin=1, vmax=100)
+#plt.savefig('/home/lapa/Figure 2022-10-31 112958.png')
         
 tmp = [i for i,x in enumerate(p) if sum(x)>0]
 y_start, y_stop = tmp[0], tmp[-1]

@@ -50,8 +50,8 @@ def main(nt, p_it, freq):
     
 
     try:
-        max_vec_len = 260
-        n_save = nt // max_vec_len if nt > max_vec_len else 1
+        
+        n_save = nt // 260 if nt > 260 else 1
         save_folder = './results/'
         save_folder += 'navier_'
         save_folder += time.strftime('%Y_%m_%d_%H_%M', time.localtime())
@@ -68,9 +68,7 @@ def main(nt, p_it, freq):
                           p, b,
                           rho, nu, 
                           dt, dx, dy,
-                          F, P0, nt, max_vec_len,
-                          n_save, p_it,
-                          save_folder=save_folder)
+                          F, P0, nt, n_save, p_it, save_folder=save_folder)
         
         p_gif = channel_shape(field = field,
                           w=w, h=h, d=d, s=s,
@@ -85,8 +83,8 @@ def main(nt, p_it, freq):
         names = ['p_init_0', 'u_init_0', 'v_init_0']
         files = ['p_gr.npy', 'u_gr.npy', 'v_gr.npy']
 
-        #names = ['u_init_0']
-        #files = ['u_gr.npy']
+        names = ['u_init_0']
+        files = ['u_gr.npy']
 
         ch_it = np.load(save_folder + '/ch_it.npy').tolist()
         
@@ -135,27 +133,6 @@ def main(nt, p_it, freq):
         fig = plt.figure(figsize = (20,15))
         plt.plot(u[:, 500])
         plt.savefig(save_folder + '/u_slice.png')
-        
-        fig = plt.figure(figsize = (20,15))
-        plt.plot(v[:, 500])
-        plt.savefig(save_folder + '/v_slice.png')
-        
-        fig = plt.figure(figsize = (20,15))
-        plt.plot(u[100, :])
-        plt.savefig(save_folder + '/u_top_slice.png')
-        
-        fig = plt.figure(figsize = (20,15))
-        plt.plot(v[100, :])
-        plt.savefig(save_folder + '/v_top_slice.png')
-        
-        fig = plt.figure(figsize = (20,15))
-        plt.plot(u[-100, :])
-        plt.savefig(save_folder + '/u_bottom_slice.png')
-        
-        fig = plt.figure(figsize = (20,15))
-        plt.plot(v[-100, :])
-        plt.savefig(save_folder + '/v_bottom_slice.png')
-        
         
 
         

@@ -9,7 +9,7 @@ kinematic viscosity      1.25e-6   mu/rho  =   0.00042985541    m^2/s
 dx = 0.05
 dy = 0.05
 
-dt = 1e-10
+dt = 1e-9
 
 rho = 1.5354e3 / 1e18
 nu = 1.25e-6 * 1e12
