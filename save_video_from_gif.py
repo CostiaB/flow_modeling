@@ -1,5 +1,6 @@
 def main(gif_path):
     import moviepy.editor as mp
+    
     clip = mp.VideoFileClip(gif_path)
     name = gif_path.split('.')[0]
     clip.write_videofile(name+'.mp4')
