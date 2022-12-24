@@ -5,8 +5,8 @@ In this project, you can find scripts for calculating the Navier-Stokes equation
 
 ## How to use
 ### To calc Navier-Stokes equation
-1. If need change channel and electrodes params in params_channel_shape.py
-2. If need change initial values for Navier-Stokes equation in params_to_calc.py
+1. If you need to change channel and electrodes params in params_channel_shape.py
+2. If you need to change initial values for Navier-Stokes equation in params_to_calc.py
 3. Start calc_navier.py
 Arguments for calc_navier.py:
 
@@ -23,8 +23,8 @@ Example:
 python3 calc_navier.py --nt 200000 --p_it 50 --freq 1 --sine --freq_points 1000
 ```
 ### Convective diffusion
-1. If need change channel and electrodes params in params_channel_shape.py
-2. If need change initial values for Convective diffusion in params_conc.py
+1. If you need to change channel and electrodes params in params_channel_shape.py
+2. If you need to change initial values for Convective diffusion in params_conc.py
 3. Start calc_diffusion.py 
 Arguments for calc_navier.py:
 
