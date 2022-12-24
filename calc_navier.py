@@ -4,6 +4,7 @@ def main(nt, p_it, freq, sine, freq_points):
     import os
     import time
     import shutil
+    import torch
 
     from script.navier_stokes import navier_stokes
     from script.channel_shape import channel_shape
@@ -47,6 +48,14 @@ def main(nt, p_it, freq, sine, freq_points):
 
 
     try:
+        if sine:
+            u = np.load('./u_start.npy', allow_pickle=True)
+            v = np.load('./v_start.npy', allow_pickle=True)
+            p = np.load('./p_start.npy', allow_pickle=True)
+            u = torch.from_numpy(u).to('cuda')
+            v = torch.from_numpy(v).to('cuda')
+            p = torch.from_numpy(p).to('cuda')
+        
         max_vec_len = 260
         n_save = nt // max_vec_len if nt > max_vec_len else 1
         save_folder = './results/'
@@ -167,14 +176,13 @@ if __name__ == '__main__':
     nt = 20
     p_it = 1500
     freq = .1
-    sine = False
     freq_points = 1000
     
     parser = argparse.ArgumentParser(description='Create params for calculation')
     parser.add_argument('--nt', default=nt, type=int)
     parser.add_argument('--p_it', default=p_it, type=int)
     parser.add_argument('--freq', default=freq, type=float)
-    parser.add_argument('--sine', default=sine, type=bool)
+    parser.add_argument('--sine', action='store_true')
     parser.add_argument('--freq_points', default=freq_points, type=int)
     
     args = parser.parse_args()
