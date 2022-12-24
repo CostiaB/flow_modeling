@@ -1,19 +1,7 @@
-<img align="left" width="600" height="200" src="https://your-url-image.png.png">
+# Flow modeling in flat channel with electrodes
+![Modeling example](info/Studio_Project(1).gif?raw=true)
 
-<!-- For CENTER alignment -->
-<p align="center">
-  <img width="600" height="200" src="https://your-url-image.png">
-</p>
-
-<!-- For RIGHT alignment -->
-
-<img align="right" width="600" height="200" src="https://your-url-image.png">
-
-Flow modeling in flat channel with electrodes
-![Pressure modeling example](info/p_init_0.gif?raw=true)
-![Horisontal speed modeling example](info/u_init_0.gif?raw=true)
-![Vertical speed modeling example](info/v_init_0.gif?raw=true)
-Sensor  nonlinear channel  modeling
+## Equations
 
 Convection-diffusion equation:
 $$\frac{\partial c}{\partial t} + D\Delta c = (\vec{v},\nabla c) $$  
