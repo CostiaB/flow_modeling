@@ -1,12 +1,12 @@
 # Flow modeling in a flat channel with electrodes
 ![Modeling example](info/Studio_Project(1).gif?raw=true)
 
-In this project, you can find scripts for calculating the Navier-Stokes equation and the Convective diffusion equation to understand speed, pressure, and concentration distribution. You can change parameters such as electrode width and height, distance between electrodes, etc. To run this scripts you need torch and CUDA.
+In this project, you can find scripts for calculating the Navier-Stokes equation and the Convective diffusion equation to understand speed, pressure, and concentration distribution. You can change parameters such as electrode width and height, the distance between electrodes, etc. To run this script you need torch and CUDA
 
 ## How to use
 ### To calc Navier-Stokes equation
 1. If you need to change channel and electrodes params in params_channel_shape.py
-2. If you need to change initial values for Navier-Stokes equation in params_to_calc.py
+2. If you need to change initial values for the Navier-Stokes equation in params_to_calc.py
 3. Start calc_navier.py
 Arguments for calc_navier.py:
 
