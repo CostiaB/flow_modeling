@@ -5,13 +5,18 @@ import gc
 
 
 def plot_gif(vector, p, file_name, vmin=-0.01, vmax=0.01, ch_it=None,
-             save_folder='', time=0.3):
+             save_folder='', time=0.3, is_conc=False):
 
     @gif.frame
     def helper_plot_1(frame, i, p):
         fig, ax = plt.subplots(figsize=(16,10))
-        cmap = plt.get_cmap('RdBu')
-        plt.imshow(frame[::-1,:], vmin=vmin, vmax=vmax, cmap=cmap)
+        
+        if is_conc:
+            plt.imshow(frame[::-1,:], vmin=vmin, vmax=vmax)
+        else:
+
+            cmap = plt.get_cmap('RdBu')
+            plt.imshow(frame[::-1,:], vmin=vmin, vmax=vmax, cmap=cmap)
         plt.colorbar()
         cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white","black"])
         plt.imshow(p[::-1,:], alpha = 0.1, cmap=cmap)

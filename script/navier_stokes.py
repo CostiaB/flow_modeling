@@ -69,7 +69,7 @@ def navier_stokes(u, v, freq,
         
         if sine:
             if t % freq_points == 0:
-                freq_cos = np.cos(2 * np.pi * (freq_step * time_mult))  
+                freq_cos = np.cos(2 * np.pi * (freq_step * time_mult))
                 F = J * freq_cos
                 freq_step += 1
            
