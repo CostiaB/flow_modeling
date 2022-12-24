@@ -4,7 +4,7 @@ def channel_shape(field,
                   bottom_right, top_right,
                   anode_value, cathode_value,
                   border_value,
-                  nx, ny):
+                  nx, ny, on_bot=False):
     '''
     field - target field
     w - electodes width,
@@ -29,7 +29,7 @@ def channel_shape(field,
     ny  -  length of the channel
     
     '''
-#(y,x)
+    #(y,x)
     
     #rectanguars
     #left
@@ -41,30 +41,6 @@ def channel_shape(field,
     field[ny-top_left[0]:, 0:top_left[1]] = border_value
     #right
     field[ny-top_right[0]:, top_right[1]:] = border_value
-
-    #right border
-    #field[bottom_right[0]:, (nx-bottom_left[1])] = border_value
-
-    #right side of lower part
-    #field[0:bottom_right[0], bottom_right[1]] = border_value
-
-    #bottom of channel
-    #field[bottom_right[0]-1, bottom_right[1]:-1] = border_value
-
-    #left border
-    #field[0:(ny-top_left[0]), bottom_left[1]-1] = border_value
-    
-    #channel top
-    #field[ny-top_left[0], bottom_left[1]:top_left[1]] = border_value
-
-    #channel top left side
-    #field[(ny-top_left[0]):, top_left[1]] = border_value
-    
-    
-
-    
-    
-    #TO DO add each side to make border
  
     #h>0 or <0
     t = 0
@@ -74,20 +50,35 @@ def channel_shape(field,
     elif h < 0:
         t = 1
         g = 0
-      
-    #top anode
-    field[(ny-top_left[0]-g*h) : (ny-top_left[0]-t*h), (top_left[1]-s-w) : (top_left[1]-s)] = anode_value
     
-    #top cathode
-    field[ny-top_left[0]-g*h:ny-top_left[0]-t*h, top_left[1]-s-w-d-w:top_left[1]-s-w-d] = cathode_value
+    if on_bot:  
+        #For electrodes when all allocated at bottom line    
+        #top anode
+        field[bottom_right[0]+t*h : bottom_right[0]+g*h,
+              (top_left[1]-s-w) : (top_left[1]-s)] = anode_value
+        
+        #top cathode
+        field[bottom_right[0]+t*h : bottom_right[0]+g*h,
+              top_left[1]-s-w-d-w : top_left[1]-s-w-d] = cathode_value       
+    else:    
+        #top anode
+        field[(ny-top_left[0]-g*h) : (ny-top_left[0]-t*h),
+              (top_left[1]-s-w) : (top_left[1]-s)] = anode_value
+        
+        #top cathode
+        field[ny-top_left[0]-g*h : ny-top_left[0]-t*h,
+              top_left[1]-s-w-d-w : top_left[1]-s-w-d] = cathode_value
+    
 
     #bottom anode
-    field[bottom_right[0]+t*h:bottom_right[0]+g*h, bottom_right[1]+s:bottom_right[1]+s+w] = anode_value
+    field[bottom_right[0]+t*h : bottom_right[0]+g*h,
+          bottom_right[1]+s : bottom_right[1]+s+w] = anode_value
 
     #bottom cathode
-    field[bottom_right[0]+t*h:bottom_right[0]+g*h, bottom_right[1]+s+w+d:bottom_right[1]+s+w+d+w] = cathode_value
+    field[bottom_right[0]+t*h : bottom_right[0]+g*h,
+          bottom_right[1]+s+w+d : bottom_right[1]+s+w+d+w] = cathode_value
     
-
+    
     
     
     
